@@ -1,0 +1,40 @@
+// Tema global — paleta bege & preto (Cantina do Joaquim)
+// https://ionicframework.com/docs/theming/
+
+:root {
+  /* bege */
+  --bege-50:  #faf6ee;
+  --bege-100: #f4eddd;
+  --bege-200: #eadfc6;
+  --bege-300: #dbcaa3;
+  --bege-400: #c7ae7f;
+  --bege-500: #b3965f;
+
+  /* preto */
+  --preto:      #1c1917;
+  --preto-70:   rgba(28, 25, 23, 0.7);
+  --preto-45:   rgba(28, 25, 23, 0.45);
+  --preto-15:   rgba(28, 25, 23, 0.15);
+  --preto-08:   rgba(28, 25, 23, 0.08);
+
+  /* cor primária = preto */
+  --ion-color-primary: #1c1917;
+  --ion-color-primary-rgb: 28, 25, 23;
+  --ion-color-primary-contrast: #faf6ee;
+  --ion-color-primary-contrast-rgb: 250, 246, 238;
+  --ion-color-primary-shade: #191614;
+  --ion-color-primary-tint: #322f2d;
+
+  /* fundos e superfícies em bege */
+  --ion-background-color: var(--bege-100);
+  --ion-text-color: var(--preto);
+  --ion-toolbar-background: var(--bege-50);
+  --ion-toolbar-color: var(--preto);
+  --ion-tab-bar-background: var(--bege-50);
+  --ion-tab-bar-color: var(--preto-45);
+  --ion-tab-bar-color-selected: var(--preto);
+  --ion-item-background: var(--bege-50);
+  --ion-card-background: var(--bege-50);
+}
+
+/* Tema escuro desativado para manter a paleta bege/preto consistente. */

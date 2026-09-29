@@ -1,0 +1,55 @@
+<ion-content class="ion-padding">
+
+  <div class="login-wrap">
+
+    <ion-card>
+      <ion-card-content>
+
+        <ion-item lines="none">
+          <ion-label position="stacked">E-mail</ion-label>
+          <ion-input
+            type="email"
+            [(ngModel)]="email"
+            placeholder="ex: aluno@ifsc.edu.br">
+          </ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-label position="stacked">Senha</ion-label>
+          <ion-input
+            type="password"
+            [(ngModel)]="senha"
+            placeholder="Digite sua senha">
+          </ion-input>
+        </ion-item>
+
+        @if (mensagemErro) {
+          <p class="msg-erro">
+            {{ mensagemErro }}
+          </p>
+        }
+
+        <ion-button expand="block" (click)="login()">
+          Entrar
+        </ion-button>
+
+        <!-- separador visual entre os dois jeitos de entrar -->
+        <div class="divisor"><span>ou</span></div>
+
+        <ion-button
+          expand="block"
+          fill="outline"
+          (click)="loginGoogle()">
+          Entrar com Google
+        </ion-button>
+
+        <ion-button expand="block" fill="clear" routerLink="/cadastro">
+          Criar uma conta
+        </ion-button>
+
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+
+</ion-content>

@@ -1,0 +1,65 @@
+/* App Global CSS */
+/* ---------------------------------------------------------------------------- */
+
+/* Core CSS required for Ionic components to work properly */
+@import "@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/display.css";
+
+/* Optional CSS utils that can be commented out */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+/* Dark Mode: import desativado de propósito — o app usa a paleta bege/preto
+   definida em theme/variables.scss em todos os momentos. */
+
+/* ----------------------------------------------------------------------------
+   Paleta global bege & preto
+---------------------------------------------------------------------------- */
+body {
+  background: var(--ion-background-color);
+  color: var(--ion-text-color);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ion-card usado como "card bonito" em toda a aplicação */
+ion-card {
+  --background: var(--bege-50);
+  background: var(--bege-50);
+  border: 1px solid var(--preto-08);
+  border-radius: 16px;
+  box-shadow: 0 1px 2px var(--preto-08), 0 4px 16px var(--preto-08);
+}
+
+/* inputs internos em bege */
+ion-item {
+  --background: var(--bege-100);
+  --color: var(--preto);
+  --border-color: var(--preto-15);
+  --border-radius: 10px;
+}
+
+/* botões */
+ion-button {
+  --border-radius: 10px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+/* mensagem de erro padrão (login / cadastro / pagamento) */
+.msg-erro {
+  background: #2a1210;
+  color: #f3d9c8;
+  border: 1px solid rgba(179, 70, 40, 0.4);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 0.9rem;
+  margin: 4px 0 8px;
+}

@@ -1,0 +1,46 @@
+<ion-content class="ion-padding">
+
+  <!-- Filtro com Salgados, Bebidas e Doces -->
+  <ion-segment [value]="filtro" (ionChange)="mudarFiltro($event)" class="filtro-segmento">
+    <ion-segment-button value="todos">
+      <ion-label>Todos</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="salgado">
+      <ion-label>Salgados</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="bebida">
+      <ion-label>Bebidas</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="doce">
+      <ion-label>Doces</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <!-- Lista de Cartões (Empilhados um abaixo do outro) -->
+  <div class="cardapio-grid">
+    @for (item of itensFiltrados; track item.nome) {
+      <ion-card class="item-cardapio">
+        <ion-card-content>
+          <!-- 1. Nome -->
+          <div class="item-nome">{{ item.nome }}</div>
+
+          <!-- 2. Preço -->
+          <div class="item-preco">{{ item.preco | moeda }}</div>
+
+          <!-- 3. Categoria -->
+          <div class="item-categoria-container">
+            <ion-badge class="item-categoria" [class]="'badge-' + item.categoria">
+              {{ rotulos[item.categoria] }}
+            </ion-badge>
+          </div>
+
+          <!-- 4. Botão de Adicionar à Comanda -->
+          <ion-button size="small" expand="block" (click)="colocarNaComanda(item)">
+            Adicionar à comanda
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+    }
+  </div>
+
+</ion-content>

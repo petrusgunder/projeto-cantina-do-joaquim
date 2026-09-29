@@ -1,0 +1,40 @@
+ion-header ion-toolbar {
+  --background: var(--bege-50);
+  border-bottom: 1px solid var(--preto-08);
+}
+
+.perfil {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  background: var(--bege-100);
+  border-bottom: 1px solid var(--preto-08);
+  font-size: 0.85rem;
+  color: var(--preto-70);
+
+  strong {
+    color: var(--preto);
+  }
+
+  img {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+}
+
+ion-tab-bar {
+  border-top: 1px solid var(--preto-08);
+}
+
+ion-tab-button {
+  --color: var(--preto-45);
+  --color-selected: var(--preto);
+}
+
+ion-badge {
+  --background: var(--preto);
+  --color: var(--bege-50);
+}

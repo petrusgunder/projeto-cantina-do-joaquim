@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="voltarCardapio()">Voltar</ion-button>
+    </ion-buttons>
+    <ion-title>Pagamento</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  @if (pagamentoConfirmado) {
+
+    <ion-card class="cartao-sucesso">
+      <ion-card-content>
+        <h2>Pagamento confirmado!</h2>
+        <p>Pode retirar seu pedido no balcão da cantina.</p>
+        <ion-button expand="block" (click)="voltarCardapio()">
+          Fazer novo pedido
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+  } @else {
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Resumo do pedido</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+
+        @if (comanda.itens().length === 0) {
+          <p class="vazio">Sua comanda está vazia.</p>
+        }
+
+        @for (item of comanda.itens(); track item.nome) {
+          <ion-item lines="none">
+            <ion-label>
+              {{ item.nome }} x {{ item.quantidade }}
+            </ion-label>
+            <span slot="end">{{ (item.preco * item.quantidade) | moeda }}</span>
+          </ion-item>
+        }
+
+        <div class="total-linha">
+          <span>Total</span>
+          <strong>{{ comanda.total() | moeda }}</strong>
+        </div>
+
+        @if (!podePagar()) {
+          <p class="msg-erro">
+            Pedido mínimo de R$ {{ minimoTexto }}. Faltam R$ {{ faltaTexto() }} para poder pagar.
+          </p>
+        }
+
+        <ion-button
+          expand="block"
+          [disabled]="!podePagar()"
+          (click)="confirmarPagamento()">
+          Confirmar pagamento
+        </ion-button>
+
+      </ion-card-content>
+    </ion-card>
+
+  }
+
+</ion-content>

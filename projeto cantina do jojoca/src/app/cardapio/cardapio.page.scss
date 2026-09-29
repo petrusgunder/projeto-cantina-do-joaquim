@@ -1,0 +1,122 @@
+/* barra de filtro */
+/* barra de filtro compacta */
+.filtro-segmento {
+  margin-top: 87px;
+  margin-bottom: 7px;
+  max-width: 360px;      /* limita a largura máxima do segmento na tela */
+
+  ion-label {
+    font-size: 0.75rem;
+    margin: 0;
+  }
+
+  ion-segment-button {
+    --background-checked: var(--preto);
+    --color: var(--preto-70);
+    --color-checked: var(--bege-50);
+    --indicator-color: transparent;
+    --padding-start: 4px;
+    --padding-end: 4px;
+    min-height: 32px;
+    border: 1.5px solid var(--preto);
+    border-radius: 8px;
+    font-weight: 500;
+  }
+}
+
+/* lista vertical de cartões */
+.cardapio-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  ion-button {
+    --background-checked: var(--preto);
+    --color: var(--preto-70);
+    --color-checked: var(--bege-50);
+    --indicator-color: transparent;
+    --padding-start: 4px;
+    --padding-end: 4px;
+    text-transform: none;
+    height: 50px;
+
+  }
+
+}
+
+/* card do item */
+.item-cardapio {
+  margin: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--preto-08);
+  box-shadow: 0 1px 2px var(--preto-08), 0 4px 14px var(--preto-08);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  ion-card-content {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    gap: 8px;
+    text-align: left;
+  }
+}
+
+/* 1. Nome do produto */
+.item-nome {
+  font-weight: 700;
+  color: var(--preto);
+  font-size: 1.1rem;
+  line-height: 1.2;
+}
+
+/* 2. Preço */
+.item-preco {
+  color: var(--preto-70);
+  font-size: 1rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 3. Categoria */
+.item-categoria-container {
+  margin: 2px 0 6px;
+}
+
+.item-categoria {
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+
+  /* Salgado: Amarelo */
+  &.badge-salgado {
+    --background: #f1c40f;
+    --color: #1a1a1a;
+  }
+
+  /* Bebida: Azul */
+  &.badge-bebida {
+    --background: #3498db;
+    --color: #ffffff;
+  }
+
+  /* Doce: Rosa */
+  &.badge-doce {
+    --background: #e84393;
+    --color: #ffffff;
+  }
+}
+
+/* 4. Botão de adicionar à comanda */
+.item-cardapio ion-button {
+  margin-top: 4px;
+  --background: var(--preto);
+  --background-activated: #000;
+  --color: var(--bege-50);
+}

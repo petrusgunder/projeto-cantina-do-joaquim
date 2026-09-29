@@ -1,0 +1,38 @@
+.cartao-sucesso {
+  text-align: center;
+  padding: 8px 4px;
+
+  h2 {
+    color: var(--preto);
+    margin: 8px 0 4px;
+  }
+
+  p {
+    color: var(--preto-70);
+    margin: 0 0 12px;
+  }
+}
+
+.vazio {
+  color: var(--preto-45);
+}
+
+ion-item {
+  --background: transparent;
+  margin-bottom: 2px;
+}
+
+.total-linha {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 14px 0 6px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--preto-15);
+  color: var(--preto);
+  font-variant-numeric: tabular-nums;
+
+  strong {
+    font-size: 1.15rem;
+  }
+}
