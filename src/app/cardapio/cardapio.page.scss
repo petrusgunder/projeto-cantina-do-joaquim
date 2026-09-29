@@ -1,0 +1,47 @@
+.filtro-segmento {
+  margin-bottom: 16px;
+}
+
+// grade de cartões do cardápio
+.cardapio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.item-cardapio {
+  margin: 0;
+  border-radius: 12px;
+  overflow: hidden;
+
+  ion-card-content {
+    padding: 12px 10px 14px;
+    text-align: center;
+  }
+}
+
+.item-foto {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-size: cover;
+  background-position: center;
+  background-color: #e2e8f0;
+}
+
+.item-categoria {
+  margin-bottom: 6px;
+}
+
+.item-nome {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.item-preco {
+  color: #64748b;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+.filtro-segmento{
+  margin-top: 80px;
+}

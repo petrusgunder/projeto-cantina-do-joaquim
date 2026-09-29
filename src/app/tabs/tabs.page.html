@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Cantina do Joaquim</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="sair()">Sair</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  @if (auth.usuario) {
+    <div class="perfil">
+      @if (auth.usuario.photoURL) {
+        <img [src]="auth.usuario.photoURL" alt="Foto do perfil">
+      }
+      <span>
+        Conectado como
+        <strong>{{ auth.usuario.displayName || auth.usuario.email }}</strong>
+      </span>
+    </div>
+  }
+</ion-header>
+
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="cardapio" href="/tabs/cardapio">
+      <ion-icon name="restaurant-outline"></ion-icon>
+      <ion-label>Cardápio</ion-label>
+    </ion-tab-button>
+    <ion-tab-button tab="comanda" href="/tabs/comanda">
+      <ion-icon name="receipt-outline"></ion-icon>
+      <ion-label>Comanda</ion-label>
+      @if (comanda.itens.length > 0) {
+        <ion-badge color="danger">{{ comanda.itens.length }}</ion-badge>
+      }
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>
