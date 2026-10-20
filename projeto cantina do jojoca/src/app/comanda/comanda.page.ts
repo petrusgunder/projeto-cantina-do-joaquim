@@ -1,19 +1,21 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import {
   IonButton,
   IonCard,
   IonCardContent,
   IonContent,
-  IonFooter,
+  IonModal,
+  IonHeader,
   IonToolbar,
-  IonSegment,
-  IonSegmentButton,
+  IonTitle,
+  IonButtons,
+  IonItem,
   IonLabel,
+  IonInput,
 } from '@ionic/angular';
-import { ComandaService } from '../services/comandaService';
-import { MoedaPipe } from '../pipes/moeda.pipe';
+import { ComandaService, ItemSistema } from '../services/comandaService';
 
 @Component({
   selector: 'app-comanda',
@@ -23,53 +25,65 @@ import { MoedaPipe } from '../pipes/moeda.pipe';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
-    MoedaPipe,
+    FormsModule,
     IonContent,
     IonCard,
     IonCardContent,
-    IonFooter,
-    IonToolbar,
     IonButton,
-    IonSegment,
-    IonSegmentButton,
+    IonModal,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonButtons,
+    IonItem,
     IonLabel,
+    IonInput,
   ],
 })
 export class ComandaPage {
+  readonly comanda = inject(ComandaService);
 
-  comanda = inject(ComandaService);
-  private router = inject(Router);
+  isModalAberto = signal(false);
+  novoNome = signal('');
+  novoLocal = signal('');
+  fotoBase64 = signal<string | undefined>(undefined);
 
-  porcentagemGorjeta = 10;
-
-  get valorGorjeta(): number {
-    return (this.comanda.total() * this.porcentagemGorjeta) / 100;
+  abrirModal() {
+    this.novoNome.set('');
+    this.novoLocal.set('');
+    this.fotoBase64.set(undefined);
+    this.isModalAberto.set(true);
   }
 
-  get totalComGorjeta(): number {
-    return this.comanda.total() + this.valorGorjeta;
+  fecharModal() {
+    this.isModalAberto.set(false);
   }
 
-  alterarQuantidade(index: number, diferenca: number) {
-    this.comanda.alterarQuantidade(index, diferenca);
-  }
-
-  removerItem(index: number) {
-    const item = this.comanda.itens()[index];
-    if (item) {
-      this.comanda.alterarQuantidade(index, -item.quantidade);
+  onFotoSelecionada(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.fotoBase64.set(reader.result as string);
+      };
+      reader.readAsDataURL(file);
     }
   }
 
-  selecionarGorjeta(evento: CustomEvent) {
-    this.porcentagemGorjeta = Number(evento.detail.value) || 0;
+  async salvarItemPerdido() {
+    if (!this.novoNome() || !this.novoLocal()) return;
+
+    await this.comanda.adicionarPerdido(
+      this.novoNome(),
+      this.novoLocal(),
+      this.fotoBase64()
+    );
+
+    this.fecharModal();
   }
 
-  irParaPagamento() {
-    if (this.comanda.itens().length === 0) {
-      return;
-    }
-    this.router.navigate(['/pagamento']);
+  async marcarComoEncontrado(item: ItemSistema) {
+    await this.comanda.marcarComoEncontrado(item);
   }
-
 }

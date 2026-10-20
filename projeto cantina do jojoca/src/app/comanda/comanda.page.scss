@@ -8,12 +8,26 @@
   margin-top: 80px;
 }
 
-/* Card individual do item */
+.btn-cadastrar {
+  margin-bottom: 14px;
+  --background: var(--preto);
+  --background-activated: #000;
+  --color: var(--bege-50);
+  font-weight: 600;
+}
+
 .item-comanda-card {
-  margin: 0 0 12px 0;
+  margin: 0 0 16px 0;
   border-radius: 16px;
   border: 1px solid var(--preto-08);
   box-shadow: 0 1px 3px var(--preto-08);
+  overflow: hidden;
+
+  .item-foto {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+  }
 
   ion-card-content {
     display: flex;
@@ -23,135 +37,59 @@
   }
 }
 
-/* 1. Nome do item */
 .item-nome {
   font-size: 1.1rem;
   color: var(--preto);
 }
 
-/* 2. Preço e cálculo */
-.item-preco {
+.item-local {
   color: var(--preto-70);
-  font-size: 0.9rem;
-  font-variant-numeric: tabular-nums;
+  font-size: 0.95rem;
+  font-weight: 600;
 }
 
-/* 3. Container com botões + - e botão Tirar */
-.controles-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 6px;
+.item-usuario {
+  font-size: 0.85rem;
+  color: var(--preto-70);
+  margin-bottom: 4px;
+
+  span {
+    font-weight: 700;
+    color: var(--preto);
+  }
 }
 
-.controles-qtd {
+.btn-encontrado {
+  margin-top: 4px;
+  --background: var(--preto);
+  --background-activated: #000;
+  --color: var(--bege-50);
+  text-transform: none;
+  height: 44px;
+}
+
+.upload-container {
+  margin: 16px 0;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 8px;
 
-  ion-button {
-    margin: 0;
-    --padding-start: 10px;
-    --padding-end: 10px;
-    --border-color: var(--preto-45);
-    --color: var(--preto);
+  .rotulo-upload {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--preto);
   }
-}
 
-.qtd {
-  min-width: 20px;
-  text-align: center;
-  font-weight: 700;
-  color: var(--preto);
-}
-
-/* Botão de tirar (vermelho sem fundo) */
-.btn-tirar {
-  margin: 0;
-  font-weight: 700;
-  --color: #e74c3c;
-}
-
-/* Card de Resumo Financeiro */
-.card-resumo {
-  margin: 20px 0 16px 0;
-  border-radius: 16px;
-  border: 1px solid var(--preto-15);
-  background: var(--bege-50);
-  box-shadow: 0 2px 8px var(--preto-08);
-
-  ion-card-content {
-    display: flex;
-    flex-direction: column;
-    padding: 16px;
-    gap: 10px;
-  }
-}
-
-.linha-resumo {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.95rem;
-  color: var(--preto);
-
-  strong {
-    font-variant-numeric: tabular-nums;
-  }
-}
-
-.secao-gorjeta {
-  margin: 6px 0;
-}
-
-.rotulo-gorjeta {
-  display: block;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--preto-70);
-  margin-bottom: 6px;
-}
-
-.segmento-gorjeta {
-  ion-segment-button {
-    --background-checked: var(--preto);
-    --color: var(--preto-70);
-    --color-checked: var(--bege-50);
-    --indicator-color: transparent;
-    border: 1px solid var(--preto);
+  .preview-foto {
+    max-height: 150px;
+    object-fit: contain;
     border-radius: 8px;
-    min-height: 32px;
-    font-size: 0.8rem;
+    border: 1px solid var(--preto-15);
   }
 }
 
-.divisor {
-  height: 1px;
-  background-color: var(--preto-15);
-  margin: 4px 0;
-}
-
-.total-pagar {
-  font-size: 1.15rem;
-  font-weight: 800;
-  color: var(--preto);
-}
-
-/* Rodapé fixo */
-ion-footer ion-toolbar {
-  --background: var(--bege-50);
-  border-top: 1px solid var(--preto-08);
-}
-
-.rodape-pagar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 6px 12px;
-}
-
-.total {
-  font-size: 1rem;
-  color: var(--preto);
-  font-variant-numeric: tabular-nums;
+.btn-salvar {
+  margin-top: 20px;
+  --background: var(--preto);
+  --color: var(--bege-50);
 }

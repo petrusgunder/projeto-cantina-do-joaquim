@@ -1,23 +1,15 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
-import { addIcons } from 'ionicons';
-import { restaurantOutline, receiptOutline } from 'ionicons/icons';
 import {
-  IonBadge,
-  IonButton,
-  IonButtons,
-  IonHeader,
-  IonIcon,
-  IonLabel,
+  IonTabs,
   IonTabBar,
   IonTabButton,
-  IonTabs,
-  IonTitle,
-  IonToolbar,
-  ViewWillEnter,
+  IonIcon,
+  IonLabel,
+  IonBadge,
 } from '@ionic/angular';
-import { AuthService } from '../services/authService';
+import { addIcons } from 'ionicons';
+import { searchOutline, alertCircleOutline } from 'ionicons/icons';
 import { ComandaService } from '../services/comandaService';
 
 @Component({
@@ -25,14 +17,8 @@ import { ComandaService } from '../services/comandaService';
   templateUrl: 'tabs.page.html',
   styleUrls: ['tabs.page.scss'],
   standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonButtons,
-    IonButton,
     IonTabs,
     IonTabBar,
     IonTabButton,
@@ -41,27 +27,10 @@ import { ComandaService } from '../services/comandaService';
     IonBadge,
   ],
 })
-export class TabsPage implements ViewWillEnter {
-
-  auth = inject(AuthService);
+export class TabsPage {
   comanda = inject(ComandaService);
-  private router = inject(Router);
 
   constructor() {
-    addIcons({ restaurantOutline, receiptOutline });
+    addIcons({ searchOutline, alertCircleOutline });
   }
-
-  // roda toda vez que a página é aberta — inclusive ao trocar de conta
-  async ionViewWillEnter() {
-    const usuario = await this.auth.esperarUsuario();
-    if (!usuario) {
-      this.router.navigate(['/login']);
-    }
-  }
-
-  async sair() {
-    await this.auth.sair();
-    this.router.navigate(['/login']);
-  }
-
 }

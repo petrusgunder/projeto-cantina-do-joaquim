@@ -1,94 +1,76 @@
 <ion-content class="ion-padding">
-
   <div class="espacamento-topo"></div>
 
-  @if (comanda.itens().length === 0) {
-    <p class="vazio">Nenhum item na comanda ainda. Adicione algo no Cardápio.</p>
+  <!-- Botão para abrir o formulário modal -->
+  <ion-button expand="block" class="btn-cadastrar" (click)="abrirModal()">
+    Cadastrar item perdido
+  </ion-button>
+
+  @if (comanda.itensPerdidos().length === 0) {
+    <p class="vazio">Nenhum objeto perdido cadastrado no momento.</p>
   }
 
-  <!-- Lista de Itens na Comanda -->
-  @for (item of comanda.itens(); track item.nome; let i = $index) {
+  <!-- Lista de Objetos Perdidos -->
+  @for (item of comanda.itensPerdidos(); track item.id) {
     <ion-card class="item-comanda-card">
+      @if (item.fotoUrl) {
+        <img [src]="item.fotoUrl" class="item-foto" alt="{{ item.nome }}" />
+      }
       <ion-card-content>
-        <!-- 1. Nome em cima em negrito -->
         <div class="item-nome">
           <strong>{{ item.nome }}</strong>
         </div>
 
-        <!-- 2. Preço formatado (Quantidade X Valor Unitário) -->
-        <div class="item-preco">
-          {{ item.quantidade }}x {{ item.preco | moeda }} = {{ (item.preco * item.quantidade) | moeda }}
+        <div class="item-local">
+          Local provável: {{ item.local }}
         </div>
 
-        <!-- 3. Controles: Botões + e - com quantidade no meio + Botão Tirar -->
-        <div class="controles-container">
-          <div class="controles-qtd">
-            <ion-button size="small" fill="outline" (click)="alterarQuantidade(i, -1)">-</ion-button>
-            <span class="qtd">{{ item.quantidade }}</span>
-            <ion-button size="small" fill="outline" (click)="alterarQuantidade(i, 1)">+</ion-button>
-          </div>
-
-          <!-- Botão Vermelho sem fundo (fill="clear") -->
-          <ion-button size="small" fill="clear" color="danger" class="btn-tirar" (click)="removerItem(i)">
-            Tirar
-          </ion-button>
+        <!-- Identificação EXCLUSIVA da área de perdidos -->
+        <div class="item-usuario">
+          Perdido por: <span>{{ item.userName }}</span>
         </div>
+
+        <ion-button size="small" expand="block" class="btn-encontrado" (click)="marcarComoEncontrado(item)">
+          Encontrado
+        </ion-button>
       </ion-card-content>
     </ion-card>
   }
 
-  <!-- Card Resumo do Pagamento (Embaixo de tudo) -->
-  @if (comanda.itens().length > 0) {
-    <ion-card class="card-resumo">
-      <ion-card-content>
-        <!-- 1. Itens R$ Valor -->
-        <div class="linha-resumo">
-          <span>Itens</span>
-          <strong>{{ comanda.total() | moeda }}</strong>
+  <!-- Modal do Formulário de Cadastro -->
+  <ion-modal [isOpen]="isModalAberto()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Cadastrar Item Perdido</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="fecharModal()">Cancelar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-item>
+          <ion-label position="stacked">Nome do Objeto</ion-label>
+          <ion-input [(ngModel)]="novoNome" placeholder="Ex: Casaco Moletom"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Local Provável</ion-label>
+          <ion-input [(ngModel)]="novoLocal" placeholder="Ex: Quadra de Esportes"></ion-input>
+        </ion-item>
+
+        <div class="upload-container">
+          <label class="rotulo-upload">Foto do Objeto:</label>
+          <input type="file" accept="image/*" (change)="onFotoSelecionada($event)" class="input-foto" />
+          @if (fotoBase64()) {
+            <img [src]="fotoBase64()" class="preview-foto" alt="Preview" />
+          }
         </div>
 
-        <!-- 2. Serviço (a gorjeta) R$ Valor -->
-        <div class="linha-resumo">
-          <span>Serviço (Gorjeta)</span>
-          <strong>{{ valorGorjeta | moeda }}</strong>
-        </div>
-
-        <!-- 3. Opções de Gorjeta (5%, 10%, 67%) -->
-        <div class="secao-gorjeta">
-          <span class="rotulo-gorjeta">Gorjeta</span>
-          <ion-segment [value]="porcentagemGorjeta" (ionChange)="selecionarGorjeta($event)" class="segmento-gorjeta">
-            <ion-segment-button [value]="5">
-              <ion-label>5%</ion-label>
-            </ion-segment-button>
-            <ion-segment-button [value]="10">
-              <ion-label>10%</ion-label>
-            </ion-segment-button>
-            <ion-segment-button [value]="67">
-              <ion-label>67%</ion-label>
-            </ion-segment-button>
-          </ion-segment>
-        </div>
-
-        <div class="divisor"></div>
-
-        <!-- 4. Total a Pagar -->
-        <div class="linha-resumo total-pagar">
-          <span>Total a Pagar</span>
-          <strong>{{ totalComGorjeta | moeda }}</strong>
-        </div>
-      </ion-card-content>
-    </ion-card>
-  }
-
+        <ion-button expand="block" class="btn-salvar" (click)="salvarItemPerdido()">
+          Salvar Item
+        </ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>
-
-<ion-footer>
-  <ion-toolbar>
-    <div class="rodape-pagar">
-      <span class="total">Total: <strong>{{ totalComGorjeta | moeda }}</strong></span>
-      <ion-button [disabled]="comanda.itens().length === 0" (click)="irParaPagamento()">
-        Pagar
-      </ion-button>
-    </div>
-  </ion-toolbar>
-</ion-footer>

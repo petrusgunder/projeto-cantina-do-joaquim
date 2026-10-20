@@ -1,64 +1,127 @@
-import { Injectable, computed, signal } from '@angular/core';
-import { ItemCardapio } from '../models/item-cardapio';
-import { ItemComanda } from '../models/item-comanda';
+import { Injectable, signal } from '@angular/core';
+import {
+  getFirestore,
+  collection,
+  query,
+  where,
+  onSnapshot,
+  addDoc,
+  updateDoc,
+  doc,
+  deleteDoc,
+  serverTimestamp
+} from 'firebase/firestore';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
-/**
- * Estado da comanda com Angular Signals:
- * - getters e mutações de array são substituídos por `signal` + `computed`,
- *   que só recalculam quando os dados mudam de fato (e não a cada ciclo
- *   de detecção de mudanças), eliminando trabalho redundante na UI Thread.
- */
-@Injectable({ providedIn: 'root' })
+export interface ItemSistema {
+  id: string;
+  nome: string;
+  local: string;
+  userId: string;
+  userName: string;
+  fotoUrl?: string;
+  status: 'perdido' | 'encontrado';
+}
+
+@Injectable({
+  providedIn: 'root',
+})
 export class ComandaService {
+  private db = getFirestore();
+  private auth = getAuth();
 
-  readonly itens = signal<ItemComanda[]>([]);
+  readonly itensAchados = signal<ItemSistema[]>([]);
+  readonly itensPerdidos = signal<ItemSistema[]>([]);
 
-  /** quantidade total de unidades (soma das quantidades) */
-  readonly quantidadeItens = computed(() =>
-    this.itens().reduce((soma, item) => soma + item.quantidade, 0)
-  );
+  private unsubscribeAchados: (() => void) | null = null;
+  private unsubscribePerdidos: (() => void) | null = null;
 
-  /** valor total da comanda */
-  readonly total = computed(() =>
-    this.itens().reduce((soma, item) => soma + item.preco * item.quantidade, 0)
-  );
-
-  // adiciona 1 unidade do item; se já existir na comanda, só aumenta a quantidade
-  adicionar(item: ItemCardapio) {
-    this.itens.update((itens) => {
-      const existente = itens.some((i) => i.nome === item.nome);
-      if (existente) {
-        return itens.map((i) =>
-          i.nome === item.nome ? { ...i, quantidade: i.quantidade + 1 } : i
-        );
+  constructor() {
+    onAuthStateChanged(this.auth, (user) => {
+      if (user) {
+        this.iniciarEscutaDados();
+      } else {
+        this.limparEscutas();
       }
-      return [...itens, { nome: item.nome, preco: item.preco, quantidade: 1, inicial: item.inicial }];
     });
   }
 
-  // soma ou subtrai da quantidade (+1, -1...); remove o item se zerar
-  alterarQuantidade(index: number, diferenca: number) {
-    this.itens.update((itens) => {
-      const item = itens[index];
-      if (!item) {
-        return itens;
-      }
-      const novaQuantidade = item.quantidade + diferenca;
-      if (novaQuantidade <= 0) {
-        return itens.filter((_, i) => i !== index);
-      }
-      return itens.map((i, iIndex) =>
-        iIndex === index ? { ...i, quantidade: novaQuantidade } : i
-      );
+  private iniciarEscutaDados() {
+    this.limparEscutas();
+
+    // 1. Consulta Global: Todos os itens achados
+    const qAchados = query(
+      collection(this.db, 'itens'),
+      where('status', '==', 'encontrado')
+    );
+    this.unsubscribeAchados = onSnapshot(qAchados, (snapshot) => {
+      const achados: ItemSistema[] = snapshot.docs.map((d) => ({
+        id: d.id,
+        ...(d.data() as Omit<ItemSistema, 'id'>),
+      }));
+      this.itensAchados.set(achados);
+    });
+
+    // 2. Consulta Compartilhada: Todos os itens perdidos de todos os usuários
+    const qPerdidos = query(
+      collection(this.db, 'itens'),
+      where('status', '==', 'perdido')
+    );
+    this.unsubscribePerdidos = onSnapshot(qPerdidos, (snapshot) => {
+      const perdidos: ItemSistema[] = snapshot.docs.map((d) => ({
+        id: d.id,
+        ...(d.data() as Omit<ItemSistema, 'id'>),
+      }));
+      this.itensPerdidos.set(perdidos);
     });
   }
 
-  remover(index: number) {
-    this.itens.update((itens) => itens.filter((_, i) => i !== index));
+  private limparEscutas() {
+    if (this.unsubscribeAchados) this.unsubscribeAchados();
+    if (this.unsubscribePerdidos) this.unsubscribePerdidos();
+    this.itensAchados.set([]);
+    this.itensPerdidos.set([]);
   }
 
-  limpar() {
-    this.itens.set([]);
+  async adicionarPerdido(nome: string, local: string, fotoUrl?: string) {
+    const user = this.auth.currentUser;
+    if (!user) return;
+
+    await addDoc(collection(this.db, 'itens'), {
+      nome,
+      local,
+      userId: user.uid,
+      userName: user.displayName || user.email || 'Usuário Anônimo',
+      fotoUrl: fotoUrl || '',
+      status: 'perdido',
+      criadoEm: serverTimestamp(),
+    });
   }
 
+  async adicionarAchado(nome: string, local: string, fotoUrl?: string) {
+    const user = this.auth.currentUser;
+    if (!user) return;
+
+    await addDoc(collection(this.db, 'itens'), {
+      nome,
+      local,
+      userId: user.uid,
+      userName: user.displayName || user.email || 'Usuário Anônimo',
+      fotoUrl: fotoUrl || '',
+      status: 'encontrado',
+      criadoEm: serverTimestamp(),
+    });
+  }
+
+  async marcarComoEncontrado(item: ItemSistema) {
+    const itemRef = doc(this.db, 'itens', item.id);
+    await updateDoc(itemRef, {
+      status: 'encontrado',
+    });
+  }
+
+  async removerAchado(id: string) {
+    const itemRef = doc(this.db, 'itens', id);
+    await deleteDoc(itemRef);
+  }
 }

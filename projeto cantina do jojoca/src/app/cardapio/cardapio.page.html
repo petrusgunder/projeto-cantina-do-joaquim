@@ -1,46 +1,67 @@
 <ion-content class="ion-padding">
 
-  <!-- Filtro com Salgados, Bebidas e Doces -->
-  <ion-segment [value]="filtro" (ionChange)="mudarFiltro($event)" class="filtro-segmento">
-    <ion-segment-button value="todos">
-      <ion-label>Todos</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="salgado">
-      <ion-label>Salgados</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="bebida">
-      <ion-label>Bebidas</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="doce">
-      <ion-label>Doces</ion-label>
-    </ion-segment-button>
-  </ion-segment>
+  <ion-button expand="block" class="btn-cadastrar" (click)="abrirModal()">
+    Cadastrar novo item
+  </ion-button>
 
-  <!-- Lista de Cartões (Empilhados um abaixo do outro) -->
+  @if (comanda.itensAchados().length === 0) {
+    <p class="vazio">Nenhum item achado registrado no momento.</p>
+  }
+
+  <!-- Lista de Objetos Achados (SEM o nome/e-mail de quem perdeu) -->
   <div class="cardapio-grid">
-    @for (item of itensFiltrados; track item.nome) {
+    @for (item of comanda.itensAchados(); track item.id) {
       <ion-card class="item-cardapio">
+        @if (item.fotoUrl) {
+          <img [src]="item.fotoUrl" class="item-foto" alt="{{ item.nome }}" />
+        }
         <ion-card-content>
-          <!-- 1. Nome -->
           <div class="item-nome">{{ item.nome }}</div>
+          <div class="item-local">Local: {{ item.local }}</div>
 
-          <!-- 2. Preço -->
-          <div class="item-preco">{{ item.preco | moeda }}</div>
-
-          <!-- 3. Categoria -->
-          <div class="item-categoria-container">
-            <ion-badge class="item-categoria" [class]="'badge-' + item.categoria">
-              {{ rotulos[item.categoria] }}
-            </ion-badge>
-          </div>
-
-          <!-- 4. Botão de Adicionar à Comanda -->
-          <ion-button size="small" expand="block" (click)="colocarNaComanda(item)">
-            Adicionar à comanda
+          <ion-button size="small" expand="block" (click)="marcarComoDevolvido(item)">
+            Devolvido ao dono
           </ion-button>
         </ion-card-content>
       </ion-card>
     }
   </div>
+
+  <!-- Modal do Formulário de Cadastro -->
+  <ion-modal [isOpen]="isModalAberto()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Cadastrar Item Encontrado</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="fecharModal()">Cancelar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-item>
+          <ion-label position="stacked">Nome do Objeto</ion-label>
+          <ion-input [(ngModel)]="novoNome" placeholder="Ex: Garrafa de Inox"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Local Encontrado</ion-label>
+          <ion-input [(ngModel)]="novoLocal" placeholder="Ex: Pátio"></ion-input>
+        </ion-item>
+
+        <div class="upload-container">
+          <label class="rotulo-upload">Foto do Objeto:</label>
+          <input type="file" accept="image/*" (change)="onFotoSelecionada($event)" class="input-foto" />
+          @if (fotoBase64()) {
+            <img [src]="fotoBase64()" class="preview-foto" alt="Preview" />
+          }
+        </div>
+
+        <ion-button expand="block" class="btn-salvar" (click)="salvarItemAchado()">
+          Salvar Item
+        </ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 
 </ion-content>
