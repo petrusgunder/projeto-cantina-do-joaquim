@@ -1,0 +1,2470 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+src/
+  app/
+    cadastro/
+      cadastro.page.html
+      cadastro.page.scss
+      cadastro.page.spec.ts
+      cadastro.page.ts
+    cardapio/
+      cardapio.page.html
+      cardapio.page.scss
+      cardapio.page.ts
+    comanda/
+      comanda.page.html
+      comanda.page.scss
+      comanda.page.ts
+    game-card/
+      game-card.component.html
+      game-card.component.scss
+      game-card.component.spec.ts
+      game-card.component.ts
+    login/
+      login.page.html
+      login.page.scss
+      login.page.spec.ts
+      login.page.ts
+    models/
+      item-cardapio.ts
+      item-comanda.ts
+      recado.ts
+    pagamento/
+      pagamento.page.html
+      pagamento.page.scss
+      pagamento.page.ts
+    pipes/
+      moeda.pipe.ts
+    services/
+      authService.ts
+      comandaService.ts
+      recadoService.ts
+    tabs/
+      tabs.page.html
+      tabs.page.scss
+      tabs.page.ts
+    app.component.html
+    app.component.scss
+    app.component.spec.ts
+    app.component.ts
+    app.routes.ts
+    firebase.config.ts
+  assets/
+    icon/
+      favicon.png
+    shapes.svg
+  environments/
+    environment.prod.ts
+    environment.ts
+  theme/
+    variables.scss
+  global.scss
+  index.html
+  main.ts
+  polyfills.ts
+  test.ts
+  zone-flags.ts
+.browserslistrc
+.editorconfig
+.gitignore
+angular.json
+eslint.config.js
+ionic.config.json
+package.json
+petrus-prova-pdm.zip
+tsconfig.app.json
+tsconfig.json
+tsconfig.spec.json
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="src/app/cadastro/cadastro.page.html">
+<ion-content class="ion-padding">
+
+  <div class="login-wrap">
+
+
+
+    <ion-card>
+      <ion-card-content>
+
+        <ion-item lines="none">
+          <ion-label position="stacked">E-mail</ion-label>
+          <ion-input
+            type="email"
+            [(ngModel)]="email"
+            placeholder="ex: aluno@ifsc.edu.br">
+          </ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-label position="stacked">Senha</ion-label>
+          <ion-input
+            type="password"
+            [(ngModel)]="senha"
+            placeholder="Mínimo de 6 caracteres">
+          </ion-input>
+        </ion-item>
+
+        @if (mensagemErro) {
+          <p class="msg-erro">
+            {{ mensagemErro }}
+          </p>
+        }
+
+        <ion-button expand="block" (click)="cadastrar()">
+          Cadastrar
+        </ion-button>
+
+        <ion-button expand="block" fill="clear" routerLink="/login">
+          Já tenho conta
+        </ion-button>
+
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+
+</ion-content>
+</file>
+
+<file path="src/app/cadastro/cadastro.page.scss">
+.login-wrap {
+  max-width: 420px;
+  margin: 48px auto 0;
+}
+
+ion-card {
+  border-radius: 12px;
+  margin: 0;
+}
+
+ion-item {
+  --background: #f8fafc;
+  --border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.msg-erro {
+  background: #fff1f2;
+  color: #9f1239;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 0.9rem;
+}
+
+ion-button {
+  margin-top: 8px;
+}
+
+.divisor {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 14px 0 6px;
+  color: #94a3b8;
+  font-size: 0.85rem;
+}
+
+.divisor::before,
+.divisor::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #e2e8f0;
+}
+</file>
+
+<file path="src/app/cadastro/cadastro.page.spec.ts">
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { CadastroPage } from './cadastro.page';
+
+describe('CadastroPage', () => {
+  let component: CadastroPage;
+  let fixture: ComponentFixture<CadastroPage>;
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(CadastroPage);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+</file>
+
+<file path="src/app/cadastro/cadastro.page.ts">
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
+import { IonButton, IonCard, IonCardContent, IonContent, IonItem, IonLabel, IonInput } from '@ionic/angular';
+import { AuthService } from '../services/authService';
+
+@Component({
+  selector: 'app-cadastro',
+  templateUrl: './cadastro.page.html',
+  styleUrls: ['./cadastro.page.scss'],
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterModule,IonContent,IonCard,IonCardContent,IonItem,IonLabel,IonInput,IonButton],
+})
+export class CadastroPage {
+
+  email = '';
+  senha = '';
+  mensagemErro = '';
+
+  private auth = inject(AuthService);
+  private router = inject(Router);
+
+  async cadastrar() {
+    this.mensagemErro = '';
+
+    if (!this.email || !this.senha) {
+      this.mensagemErro = 'Preencha e-mail e senha.';
+      return;
+    }
+
+    if (!this.email.includes('@')) {
+      this.mensagemErro = 'Digite um e-mail válido.';
+      return;
+    }
+
+    if (this.senha.length < 6) {
+      this.mensagemErro = 'A senha precisa ter pelo menos 6 caracteres.';
+      return;
+    }
+
+    try {
+      await this.auth.cadastrar(this.email, this.senha);
+      await this.auth.aguardarSessao();
+      this.router.navigate(['/tabs/cardapio']);
+    } catch (e: any) {
+      this.mensagemErro = this.auth.traduzirErro(e.code);
+    }
+  }
+
+}
+</file>
+
+<file path="src/app/cardapio/cardapio.page.html">
+<ion-content class="ion-padding">
+
+  <ion-button expand="block" class="btn-cadastrar" (click)="abrirModal()">
+    Cadastrar novo item
+  </ion-button>
+
+  @if (comanda.itensAchados().length === 0) {
+    <p class="vazio">Nenhum item achado registrado no momento.</p>
+  }
+
+  <!-- Lista de Objetos Achados (SEM o nome/e-mail de quem perdeu) -->
+  <div class="cardapio-grid">
+    @for (item of comanda.itensAchados(); track item.id) {
+      <ion-card class="item-cardapio">
+        @if (item.fotoUrl) {
+          <img [src]="item.fotoUrl" class="item-foto" alt="{{ item.nome }}" />
+        }
+        <ion-card-content>
+          <div class="item-nome">{{ item.nome }}</div>
+          <div class="item-local">Local: {{ item.local }}</div>
+
+          <ion-button size="small" expand="block" (click)="marcarComoDevolvido(item)">
+            Devolvido ao dono
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+    }
+  </div>
+
+  <!-- Modal do Formulário de Cadastro -->
+  <ion-modal [isOpen]="isModalAberto()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Cadastrar Item Encontrado</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="fecharModal()">Cancelar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-item>
+          <ion-label position="stacked">Nome do Objeto</ion-label>
+          <ion-input [(ngModel)]="novoNome" placeholder="Ex: Garrafa de Inox"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Local Encontrado</ion-label>
+          <ion-input [(ngModel)]="novoLocal" placeholder="Ex: Pátio"></ion-input>
+        </ion-item>
+
+        <div class="upload-container">
+          <label class="rotulo-upload">Foto do Objeto:</label>
+          <input type="file" accept="image/*" (change)="onFotoSelecionada($event)" class="input-foto" />
+          @if (fotoBase64()) {
+            <img [src]="fotoBase64()" class="preview-foto" alt="Preview" />
+          }
+        </div>
+
+        <ion-button expand="block" class="btn-salvar" (click)="salvarItemAchado()">
+          Salvar Item
+        </ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+</ion-content>
+</file>
+
+<file path="src/app/cardapio/cardapio.page.scss">
+.btn-cadastrar {
+  margin-top: 87px;
+  margin-bottom: 14px;
+  --background: var(--preto);
+  --background-activated: #000;
+  --color: var(--bege-50);
+  font-weight: 600;
+}
+
+.vazio {
+  text-align: center;
+  color: var(--preto-45);
+  margin: 24px 0;
+}
+
+.cardapio-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.item-cardapio {
+  margin: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--preto-08);
+  box-shadow: 0 1px 2px var(--preto-08), 0 4px 14px var(--preto-08);
+
+  .item-foto {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+  }
+
+  ion-card-content {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    gap: 8px;
+    text-align: left;
+  }
+
+  ion-button {
+    margin-top: 4px;
+    --background: var(--preto);
+    --background-activated: #000;
+    --color: var(--bege-50);
+  }
+}
+
+.item-nome {
+  font-weight: 700;
+  color: var(--preto);
+  font-size: 1.1rem;
+}
+
+.item-local {
+  color: var(--preto-70);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.upload-container {
+  margin: 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .rotulo-upload {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--preto);
+  }
+
+  .preview-foto {
+    max-height: 150px;
+    object-fit: contain;
+    border-radius: 8px;
+    border: 1px solid var(--preto-15);
+  }
+}
+
+.btn-salvar {
+  margin-top: 20px;
+  --background: var(--preto);
+  --color: var(--bege-50);
+}
+</file>
+
+<file path="src/app/cardapio/cardapio.page.ts">
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import {
+  IonButton,
+  IonCard,
+  IonCardContent,
+  IonContent,
+  IonModal,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonButtons,
+  IonItem,
+  IonLabel,
+  IonInput,
+} from '@ionic/angular';
+import { ComandaService, ItemSistema } from '../services/comandaService';
+
+@Component({
+  selector: 'app-cardapio',
+  templateUrl: 'cardapio.page.html',
+  styleUrls: ['cardapio.page.scss'],
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonContent,
+    IonCard,
+    IonCardContent,
+    IonButton,
+    IonModal,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonButtons,
+    IonItem,
+    IonLabel,
+    IonInput,
+  ],
+})
+export class CardapioPage {
+  readonly comanda = inject(ComandaService);
+
+  isModalAberto = signal(false);
+  novoNome = signal('');
+  novoLocal = signal('');
+  fotoBase64 = signal<string | undefined>(undefined);
+
+  abrirModal() {
+    this.novoNome.set('');
+    this.novoLocal.set('');
+    this.fotoBase64.set(undefined);
+    this.isModalAberto.set(true);
+  }
+
+  fecharModal() {
+    this.isModalAberto.set(false);
+  }
+
+  onFotoSelecionada(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.fotoBase64.set(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  async salvarItemAchado() {
+    if (!this.novoNome() || !this.novoLocal()) return;
+
+    await this.comanda.adicionarAchado(
+      this.novoNome(),
+      this.novoLocal(),
+      this.fotoBase64()
+    );
+
+    this.fecharModal();
+  }
+
+  async marcarComoDevolvido(item: ItemSistema) {
+    await this.comanda.removerAchado(item.id);
+  }
+}
+</file>
+
+<file path="src/app/comanda/comanda.page.html">
+<ion-content class="ion-padding">
+  <div class="espacamento-topo"></div>
+
+  <!-- Botão para abrir o formulário modal -->
+  <ion-button expand="block" class="btn-cadastrar" (click)="abrirModal()">
+    Cadastrar item perdido
+  </ion-button>
+
+  @if (comanda.itensPerdidos().length === 0) {
+    <p class="vazio">Nenhum objeto perdido cadastrado no momento.</p>
+  }
+
+  <!-- Lista de Objetos Perdidos -->
+  @for (item of comanda.itensPerdidos(); track item.id) {
+    <ion-card class="item-comanda-card">
+      @if (item.fotoUrl) {
+        <img [src]="item.fotoUrl" class="item-foto" alt="{{ item.nome }}" />
+      }
+      <ion-card-content>
+        <div class="item-nome">
+          <strong>{{ item.nome }}</strong>
+        </div>
+
+        <div class="item-local">
+          Local provável: {{ item.local }}
+        </div>
+
+        <!-- Identificação EXCLUSIVA da área de perdidos -->
+        <div class="item-usuario">
+          Perdido por: <span>{{ item.userName }}</span>
+        </div>
+
+        <ion-button size="small" expand="block" class="btn-encontrado" (click)="marcarComoEncontrado(item)">
+          Encontrado
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  }
+
+  <!-- Modal do Formulário de Cadastro -->
+  <ion-modal [isOpen]="isModalAberto()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Cadastrar Item Perdido</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="fecharModal()">Cancelar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-item>
+          <ion-label position="stacked">Nome do Objeto</ion-label>
+          <ion-input [(ngModel)]="novoNome" placeholder="Ex: Casaco Moletom"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Local Provável</ion-label>
+          <ion-input [(ngModel)]="novoLocal" placeholder="Ex: Quadra de Esportes"></ion-input>
+        </ion-item>
+
+        <div class="upload-container">
+          <label class="rotulo-upload">Foto do Objeto:</label>
+          <input type="file" accept="image/*" (change)="onFotoSelecionada($event)" class="input-foto" />
+          @if (fotoBase64()) {
+            <img [src]="fotoBase64()" class="preview-foto" alt="Preview" />
+          }
+        </div>
+
+        <ion-button expand="block" class="btn-salvar" (click)="salvarItemPerdido()">
+          Salvar Item
+        </ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>
+</file>
+
+<file path="src/app/comanda/comanda.page.scss">
+.vazio {
+  text-align: center;
+  color: var(--preto-45);
+  margin: 24px 0;
+}
+
+.espacamento-topo {
+  margin-top: 80px;
+}
+
+.btn-cadastrar {
+  margin-bottom: 14px;
+  --background: var(--preto);
+  --background-activated: #000;
+  --color: var(--bege-50);
+  font-weight: 600;
+}
+
+.item-comanda-card {
+  margin: 0 0 16px 0;
+  border-radius: 16px;
+  border: 1px solid var(--preto-08);
+  box-shadow: 0 1px 3px var(--preto-08);
+  overflow: hidden;
+
+  .item-foto {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+  }
+
+  ion-card-content {
+    display: flex;
+    flex-direction: column;
+    padding: 14px;
+    gap: 6px;
+  }
+}
+
+.item-nome {
+  font-size: 1.1rem;
+  color: var(--preto);
+}
+
+.item-local {
+  color: var(--preto-70);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.item-usuario {
+  font-size: 0.85rem;
+  color: var(--preto-70);
+  margin-bottom: 4px;
+
+  span {
+    font-weight: 700;
+    color: var(--preto);
+  }
+}
+
+.btn-encontrado {
+  margin-top: 4px;
+  --background: var(--preto);
+  --background-activated: #000;
+  --color: var(--bege-50);
+  text-transform: none;
+  height: 44px;
+}
+
+.upload-container {
+  margin: 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .rotulo-upload {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--preto);
+  }
+
+  .preview-foto {
+    max-height: 150px;
+    object-fit: contain;
+    border-radius: 8px;
+    border: 1px solid var(--preto-15);
+  }
+}
+
+.btn-salvar {
+  margin-top: 20px;
+  --background: var(--preto);
+  --color: var(--bege-50);
+}
+</file>
+
+<file path="src/app/comanda/comanda.page.ts">
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import {
+  IonButton,
+  IonCard,
+  IonCardContent,
+  IonContent,
+  IonModal,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonButtons,
+  IonItem,
+  IonLabel,
+  IonInput,
+} from '@ionic/angular';
+import { ComandaService, ItemSistema } from '../services/comandaService';
+
+@Component({
+  selector: 'app-comanda',
+  templateUrl: 'comanda.page.html',
+  styleUrls: ['comanda.page.scss'],
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonContent,
+    IonCard,
+    IonCardContent,
+    IonButton,
+    IonModal,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonButtons,
+    IonItem,
+    IonLabel,
+    IonInput,
+  ],
+})
+export class ComandaPage {
+  readonly comanda = inject(ComandaService);
+
+  isModalAberto = signal(false);
+  novoNome = signal('');
+  novoLocal = signal('');
+  fotoBase64 = signal<string | undefined>(undefined);
+
+  abrirModal() {
+    this.novoNome.set('');
+    this.novoLocal.set('');
+    this.fotoBase64.set(undefined);
+    this.isModalAberto.set(true);
+  }
+
+  fecharModal() {
+    this.isModalAberto.set(false);
+  }
+
+  onFotoSelecionada(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.fotoBase64.set(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  async salvarItemPerdido() {
+    if (!this.novoNome() || !this.novoLocal()) return;
+
+    await this.comanda.adicionarPerdido(
+      this.novoNome(),
+      this.novoLocal(),
+      this.fotoBase64()
+    );
+
+    this.fecharModal();
+  }
+
+  async marcarComoEncontrado(item: ItemSistema) {
+    await this.comanda.marcarComoEncontrado(item);
+  }
+}
+</file>
+
+<file path="src/app/game-card/game-card.component.html">
+<div class="game-card">
+  <img src="{{jogo.imagem}}" alt="{{jogo.nome}}">
+  <h1>{{jogo.nome}}</h1>
+  <h3>Plataforma: {{jogo.plataforma}}</h3>
+  <p>Gênero: {{jogo.genero}}<br>Nota: {{jogo.nota}}</p>
+  <ion-button (click)="onFavoritar()" expand="block">Favoritar</ion-button>
+</div>
+</file>
+
+<file path="src/app/game-card/game-card.component.scss">
+:host {
+  display: block;
+}
+
+.game-card {
+  background: var(--ion-color-light);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 16px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.game-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.game-card img {
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.game-card h1 {
+  margin: 8px 0;
+  font-size: 1.3rem;
+  color: var(--ion-color-dark);
+}
+
+.game-card h3 {
+  margin: 4px 0;
+  font-size: 1rem;
+  color: var(--ion-color-medium);
+  font-weight: 500;
+}
+
+.game-card p {
+  margin: 8px 0;
+  font-size: 0.95rem;
+  color: var(--ion-color-medium);
+  line-height: 1.5;
+}
+
+ion-button {
+  margin-top: 12px;
+  --border-radius: 8px;
+}
+</file>
+
+<file path="src/app/game-card/game-card.component.spec.ts">
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { IonicModule } from '@ionic/angular';
+
+import { GameCardComponent } from './game-card.component';
+
+describe('GameCardComponent', () => {
+  let component: GameCardComponent;
+  let fixture: ComponentFixture<GameCardComponent>;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [ GameCardComponent ],
+      imports: [IonicModule.forRoot()]
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(GameCardComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  }));
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+</file>
+
+<file path="src/app/game-card/game-card.component.ts">
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { IonButton } from '@ionic/angular';
+
+@Component({
+  selector: 'app-game-card',
+  templateUrl: './game-card.component.html',
+  styleUrls: ['./game-card.component.scss'],
+  imports: [IonButton],
+})
+export class GameCardComponent  implements OnInit {
+
+  @Input() jogo: any;
+  @Output() favoritar = new EventEmitter<string>();
+
+  constructor() { }
+
+  ngOnInit() {}
+
+  onFavoritar() {
+    this.favoritar.emit(this.jogo.nome);
+  }
+
+}
+</file>
+
+<file path="src/app/login/login.page.html">
+<ion-content class="ion-padding">
+
+  <div class="login-wrap">
+
+    <ion-card>
+      <ion-card-content>
+
+        <ion-item lines="none">
+          <ion-label position="stacked">E-mail</ion-label>
+          <ion-input
+            type="email"
+            [(ngModel)]="email"
+            placeholder="ex: aluno@ifsc.edu.br">
+          </ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-label position="stacked">Senha</ion-label>
+          <ion-input
+            type="password"
+            [(ngModel)]="senha"
+            placeholder="Digite sua senha">
+          </ion-input>
+        </ion-item>
+
+        @if (mensagemErro) {
+          <p class="msg-erro">
+            {{ mensagemErro }}
+          </p>
+        }
+
+        <ion-button expand="block" (click)="login()">
+          Entrar
+        </ion-button>
+
+        <!-- separador visual entre os dois jeitos de entrar -->
+        <div class="divisor"><span>ou</span></div>
+
+        <ion-button
+          expand="block"
+          fill="outline"
+          (click)="loginGoogle()">
+          Entrar com Google
+        </ion-button>
+
+        <ion-button expand="block" fill="clear" routerLink="/cadastro">
+          Criar uma conta
+        </ion-button>
+
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+
+</ion-content>
+</file>
+
+<file path="src/app/login/login.page.scss">
+.login-wrap {
+  max-width: 420px;
+  margin: 48px auto 0;
+}
+
+.login-marca {
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.login-logo {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: var(--preto);
+  color: var(--bege-50);
+  font-weight: 700;
+  font-size: 1.05rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  border: 1px solid var(--preto-15);
+}
+
+.login-marca h1 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: var(--preto);
+}
+
+.login-marca p {
+  margin: 4px 0 0;
+  color: var(--preto-45);
+  font-size: 0.9rem;
+}
+
+ion-card {
+  border-radius: 16px;
+  margin: 0;
+}
+
+ion-item {
+  margin-bottom: 10px;
+}
+
+ion-button {
+  margin-top: 8px;
+}
+
+.divisor {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 14px 0 6px;
+  color: var(--preto-45);
+  font-size: 0.85rem;
+}
+
+.divisor::before,
+.divisor::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--preto-15);
+}
+</file>
+
+<file path="src/app/login/login.page.spec.ts">
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { LoginPage } from './login.page';
+
+describe('LoginPage', () => {
+  let component: LoginPage;
+  let fixture: ComponentFixture<LoginPage>;
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(LoginPage);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+</file>
+
+<file path="src/app/login/login.page.ts">
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../services/authService';
+import { IonButton, IonCard, IonCardContent, IonContent, IonItem, IonLabel, IonInput } from '@ionic/angular';
+
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.page.html',
+  styleUrls: ['./login.page.scss'],
+  standalone: true,
+  imports: [ CommonModule, FormsModule, RouterModule,IonContent,IonCard,IonCardContent,IonItem,IonLabel,IonInput,IonButton],
+})
+export class LoginPage {
+
+  email = '';
+  senha = '';
+  mensagemErro = '';
+
+  private auth = inject(AuthService);
+  private router = inject(Router);
+
+  async login() {
+    this.mensagemErro = '';
+
+    if (!this.email || !this.senha) {
+      this.mensagemErro = 'Preencha e-mail e senha.';
+      return;
+    }
+
+    try {
+      await this.auth.login(this.email, this.senha);
+      await this.auth.aguardarSessao();
+      this.router.navigate(['/tabs/cardapio']);
+    } catch (e: any) {
+      this.mensagemErro = this.auth.traduzirErro(e.code);
+      this.senha = '';
+    }
+  }
+
+  async loginGoogle() {
+    this.mensagemErro = '';
+
+    try {
+      await this.auth.loginComGoogle();
+      await this.auth.aguardarSessao();
+      this.router.navigate(['/tabs/cardapio']);
+    } catch (e: any) {
+      this.mensagemErro = this.auth.traduzirErro(e.code);
+    }
+  }
+
+}
+</file>
+
+<file path="src/app/models/item-cardapio.ts">
+export type CategoriaCardapio = 'salgado' | 'bebida' | 'doce';
+
+export interface ItemCardapio {
+  nome: string;
+  preco: number;
+  categoria: CategoriaCardapio;
+  inicial: string;
+}
+</file>
+
+<file path="src/app/models/item-comanda.ts">
+export interface ItemComanda {
+  nome: string;
+  preco: number;
+  quantidade: number;
+  /** letra do monograma (pré-calculada, sem método no template) */
+  inicial: string;
+}
+</file>
+
+<file path="src/app/models/recado.ts">
+export interface Recado {
+  id: string;
+  texto: string;
+  autor: string;
+  criadoEm: Date;
+}
+</file>
+
+<file path="src/app/pagamento/pagamento.page.html">
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Achados e Perdidos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-content>
+      <h2>Área não necessária</h2>
+      <p>O fluxo de compras foi descontinuado. O sistema agora opera exclusivamente para Achados e Perdidos escolares.</p>
+      <ion-button expand="block" (click)="voltarInicio()">
+        Ir para Achados
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+</file>
+
+<file path="src/app/pagamento/pagamento.page.scss">
+.cartao-sucesso {
+  text-align: center;
+  padding: 8px 4px;
+
+  h2 {
+    color: var(--preto);
+    margin: 8px 0 4px;
+  }
+
+  p {
+    color: var(--preto-70);
+    margin: 0 0 12px;
+  }
+}
+
+.vazio {
+  color: var(--preto-45);
+}
+
+ion-item {
+  --background: transparent;
+  margin-bottom: 2px;
+}
+
+.total-linha {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 14px 0 6px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--preto-15);
+  color: var(--preto);
+  font-variant-numeric: tabular-nums;
+
+  strong {
+    font-size: 1.15rem;
+  }
+}
+</file>
+
+<file path="src/app/pagamento/pagamento.page.ts">
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import {
+  IonContent,
+  IonHeader,
+  IonTitle,
+  IonToolbar,
+  IonButton,
+  IonCard,
+  IonCardContent,
+} from '@ionic/angular';
+
+@Component({
+  selector: 'app-pagamento',
+  templateUrl: 'pagamento.page.html',
+  styleUrls: ['pagamento.page.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    IonContent,
+    IonHeader,
+    IonTitle,
+    IonToolbar,
+    IonButton,
+    IonCard,
+    IonCardContent,
+  ],
+})
+export class PagamentoPage {
+  private router = inject(Router);
+
+  voltarInicio() {
+    this.router.navigate(['/tabs/cardapio']);
+  }
+}
+</file>
+
+<file path="src/app/pipes/moeda.pipe.ts">
+import { Pipe, PipeTransform } from '@angular/core';
+
+/** Pipe puro: formata número como moeda BRL com cache automático por valor,
+ *  evitando chamadas repetidas de toFixed() a cada ciclo de detecção. */
+@Pipe({
+  name: 'moeda',
+  standalone: true,
+  pure: true,
+})
+export class MoedaPipe implements PipeTransform {
+
+  transform(valor: number | null | undefined): string {
+    if (valor == null || Number.isNaN(valor)) {
+      return 'R$ 0.00';
+    }
+    return `R$ ${valor.toFixed(2)}`;
+  }
+
+}
+</file>
+
+<file path="src/app/services/authService.ts">
+import { Injectable, NgZone, inject } from '@angular/core';
+import {
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithPopup,
+  signInWithEmailAndPassword,
+  signOut,
+  User,
+} from 'firebase/auth';
+import { auth } from '../firebase.config';
+
+@Injectable({ providedIn: 'root' })
+export class AuthService {
+
+  usuario: User | null = null;
+  pronto = false;
+
+  private ngZone = inject(NgZone);
+
+  constructor() {
+    onAuthStateChanged(auth, (user) => {
+      this.ngZone.run(() => {
+        this.usuario = user;
+        this.pronto = true;
+      });
+    });
+  }
+
+  esperarUsuario(): Promise<User | null> {
+    if (this.pronto) {
+      return Promise.resolve(this.usuario);
+    }
+
+    return new Promise((resolve) => {
+      const cancelar = onAuthStateChanged(auth, (user) => {
+        cancelar();
+        this.ngZone.run(() => {
+          this.usuario = user;
+          this.pronto = true;
+          resolve(user);
+        });
+      });
+    });
+  }
+
+  // espera o Firebase confirmar a sessão atual antes de navegar
+  aguardarSessao(): Promise<User> {
+    return new Promise((resolve) => {
+      if (this.usuario) {
+        resolve(this.usuario);
+        return;
+      }
+
+      const cancelar = onAuthStateChanged(auth, (user) => {
+        if (!user) {
+          return; // ainda está saindo/trocando de conta; continua esperando
+        }
+        cancelar();
+        this.ngZone.run(() => {
+          this.usuario = user;
+          this.pronto = true;
+          resolve(user);
+        });
+      });
+    });
+  }
+
+  cadastrar(email: string, senha: string) {
+    return createUserWithEmailAndPassword(auth, email, senha);
+  }
+
+  login(email: string, senha: string) {
+    return signInWithEmailAndPassword(auth, email, senha);
+  }
+
+  // entra com a conta Google, sem senha nova
+  loginComGoogle() {
+    const provedor = new GoogleAuthProvider();
+    return signInWithPopup(auth, provedor);
+  }
+
+  sair() {
+    return signOut(auth);
+  }
+
+  traduzirErro(codigo: string): string {
+    switch (codigo) {
+      case 'auth/email-already-in-use':
+        return 'Este e-mail já está cadastrado.';
+      case 'auth/invalid-email':
+        return 'Digite um e-mail válido.';
+      case 'auth/weak-password':
+        return 'A senha precisa ter pelo menos 6 caracteres.';
+      case 'auth/invalid-credential':
+      case 'auth/user-not-found':
+      case 'auth/wrong-password':
+        return 'E-mail ou senha incorretos.';
+      case 'auth/popup-closed-by-user':
+      case 'auth/cancelled-popup-request':
+        return 'Login cancelado.';
+      case 'auth/popup-blocked':
+        return 'O navegador bloqueou a janela. Libere o popup e tente de novo.';
+      case 'auth/account-exists-with-different-credential':
+        return 'Este e-mail já foi cadastrado com senha. Entre com e-mail e senha.';
+      case 'auth/unauthorized-domain':
+        return 'Este endereço não está autorizado no Firebase.';
+      default:
+        return 'Não foi possível concluir. Tente de novo.';
+    }
+  }
+
+}
+</file>
+
+<file path="src/app/services/comandaService.ts">
+import { Injectable, signal } from '@angular/core';
+import {
+  getFirestore,
+  collection,
+  query,
+  where,
+  onSnapshot,
+  addDoc,
+  updateDoc,
+  doc,
+  deleteDoc,
+  serverTimestamp
+} from 'firebase/firestore';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+
+export interface ItemSistema {
+  id: string;
+  nome: string;
+  local: string;
+  userId: string;
+  userName: string;
+  fotoUrl?: string;
+  status: 'perdido' | 'encontrado';
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class ComandaService {
+  private db = getFirestore();
+  private auth = getAuth();
+
+  readonly itensAchados = signal<ItemSistema[]>([]);
+  readonly itensPerdidos = signal<ItemSistema[]>([]);
+
+  private unsubscribeAchados: (() => void) | null = null;
+  private unsubscribePerdidos: (() => void) | null = null;
+
+  constructor() {
+    onAuthStateChanged(this.auth, (user) => {
+      if (user) {
+        this.iniciarEscutaDados();
+      } else {
+        this.limparEscutas();
+      }
+    });
+  }
+
+  private iniciarEscutaDados() {
+    this.limparEscutas();
+
+    // 1. Consulta Global: Todos os itens achados
+    const qAchados = query(
+      collection(this.db, 'itens'),
+      where('status', '==', 'encontrado')
+    );
+    this.unsubscribeAchados = onSnapshot(qAchados, (snapshot) => {
+      const achados: ItemSistema[] = snapshot.docs.map((d) => ({
+        id: d.id,
+        ...(d.data() as Omit<ItemSistema, 'id'>),
+      }));
+      this.itensAchados.set(achados);
+    });
+
+    // 2. Consulta Compartilhada: Todos os itens perdidos de todos os usuários
+    const qPerdidos = query(
+      collection(this.db, 'itens'),
+      where('status', '==', 'perdido')
+    );
+    this.unsubscribePerdidos = onSnapshot(qPerdidos, (snapshot) => {
+      const perdidos: ItemSistema[] = snapshot.docs.map((d) => ({
+        id: d.id,
+        ...(d.data() as Omit<ItemSistema, 'id'>),
+      }));
+      this.itensPerdidos.set(perdidos);
+    });
+  }
+
+  private limparEscutas() {
+    if (this.unsubscribeAchados) this.unsubscribeAchados();
+    if (this.unsubscribePerdidos) this.unsubscribePerdidos();
+    this.itensAchados.set([]);
+    this.itensPerdidos.set([]);
+  }
+
+  async adicionarPerdido(nome: string, local: string, fotoUrl?: string) {
+    const user = this.auth.currentUser;
+    if (!user) return;
+
+    await addDoc(collection(this.db, 'itens'), {
+      nome,
+      local,
+      userId: user.uid,
+      userName: user.displayName || user.email || 'Usuário Anônimo',
+      fotoUrl: fotoUrl || '',
+      status: 'perdido',
+      criadoEm: serverTimestamp(),
+    });
+  }
+
+  async adicionarAchado(nome: string, local: string, fotoUrl?: string) {
+    const user = this.auth.currentUser;
+    if (!user) return;
+
+    await addDoc(collection(this.db, 'itens'), {
+      nome,
+      local,
+      userId: user.uid,
+      userName: user.displayName || user.email || 'Usuário Anônimo',
+      fotoUrl: fotoUrl || '',
+      status: 'encontrado',
+      criadoEm: serverTimestamp(),
+    });
+  }
+
+  async marcarComoEncontrado(item: ItemSistema) {
+    const itemRef = doc(this.db, 'itens', item.id);
+    await updateDoc(itemRef, {
+      status: 'encontrado',
+    });
+  }
+
+  async removerAchado(id: string) {
+    const itemRef = doc(this.db, 'itens', id);
+    await deleteDoc(itemRef);
+  }
+}
+</file>
+
+<file path="src/app/services/recadoService.ts">
+import { Injectable } from '@angular/core';
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  orderBy,
+  query,
+  Timestamp,
+} from 'firebase/firestore';
+import { db } from '../firebase.config';
+import { Recado } from '../models/recado';
+
+@Injectable({ providedIn: 'root' })
+export class RecadoService {
+
+  async listar(): Promise<Recado[]> {
+    const consulta = query(collection(db, 'recados'), orderBy('criadoEm', 'desc'));
+    const snap = await getDocs(consulta);
+
+    return snap.docs.map((item) => {
+      const dados = item.data();
+      return {
+        id: item.id,
+        texto: dados['texto'],
+        autor: dados['autor'],
+        criadoEm: dados['criadoEm']?.toDate?.() ?? new Date(),
+      };
+    });
+  }
+
+  adicionar(texto: string, autor: string) {
+    return addDoc(collection(db, 'recados'), {
+      texto,
+      autor,
+      criadoEm: Timestamp.now(),
+    });
+  }
+
+  remover(id: string) {
+    return deleteDoc(doc(db, 'recados', id));
+  }
+
+}
+</file>
+
+<file path="src/app/tabs/tabs.page.html">
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="cardapio">
+      <ion-icon name="search-outline"></ion-icon>
+      <ion-label>Achados</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="comanda">
+      <ion-icon name="alert-circle-outline"></ion-icon>
+      <ion-label>Perdidos</ion-label>
+      @if (comanda.itensPerdidos().length > 0) {
+        <ion-badge color="danger">{{ comanda.itensPerdidos().length }}</ion-badge>
+      }
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>
+</file>
+
+<file path="src/app/tabs/tabs.page.scss">
+ion-header ion-toolbar {
+  --background: var(--bege-50);
+  border-bottom: 1px solid var(--preto-08);
+}
+
+.perfil {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  background: var(--bege-100);
+  border-bottom: 1px solid var(--preto-08);
+  font-size: 0.85rem;
+  color: var(--preto-70);
+
+  strong {
+    color: var(--preto);
+  }
+
+  img {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+}
+
+ion-tab-bar {
+  border-top: 1px solid var(--preto-08);
+}
+
+ion-tab-button {
+  --color: var(--preto-45);
+  --color-selected: var(--preto);
+}
+
+ion-badge {
+  --background: var(--preto);
+  --color: var(--bege-50);
+}
+</file>
+
+<file path="src/app/tabs/tabs.page.ts">
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {
+  IonTabs,
+  IonTabBar,
+  IonTabButton,
+  IonIcon,
+  IonLabel,
+  IonBadge,
+} from '@ionic/angular';
+import { addIcons } from 'ionicons';
+import { searchOutline, alertCircleOutline } from 'ionicons/icons';
+import { ComandaService } from '../services/comandaService';
+
+@Component({
+  selector: 'app-tabs',
+  templateUrl: 'tabs.page.html',
+  styleUrls: ['tabs.page.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    IonTabs,
+    IonTabBar,
+    IonTabButton,
+    IonIcon,
+    IonLabel,
+    IonBadge,
+  ],
+})
+export class TabsPage {
+  comanda = inject(ComandaService);
+
+  constructor() {
+    addIcons({ searchOutline, alertCircleOutline });
+  }
+}
+</file>
+
+<file path="src/app/app.component.html">
+<ion-app>
+  <ion-router-outlet></ion-router-outlet>
+</ion-app>
+</file>
+
+<file path="src/app/app.component.scss">
+
+</file>
+
+<file path="src/app/app.component.spec.ts">
+import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { AppComponent } from './app.component';
+
+describe('AppComponent', () => {
+  it('should create the app', async () => {
+    await TestBed.configureTestingModule({
+      imports: [AppComponent],
+      providers: [provideRouter([])]
+    }).compileComponents();
+    
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    expect(app).toBeTruthy();
+  });
+});
+</file>
+
+<file path="src/app/app.component.ts">
+import { Component } from '@angular/core';
+import { IonApp, IonRouterOutlet } from '@ionic/angular';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: 'app.component.html',
+  imports: [IonApp, IonRouterOutlet],
+})
+export class AppComponent {
+  constructor() {}
+}
+</file>
+
+<file path="src/app/app.routes.ts">
+import { Routes } from '@angular/router';
+
+export const routes: Routes = [
+  {
+    path: 'login',
+    loadComponent: () => import('./login/login.page').then(m => m.LoginPage),
+  },
+  {
+    path: 'cadastro',
+    loadComponent: () => import('./cadastro/cadastro.page').then(m => m.CadastroPage),
+  },
+  {
+    path: 'tabs',
+    loadComponent: () => import('./tabs/tabs.page').then(m => m.TabsPage),
+    children: [
+      {
+        path: 'cardapio',
+        loadComponent: () => import('./cardapio/cardapio.page').then(m => m.CardapioPage),
+      },
+      {
+        path: 'comanda',
+        loadComponent: () => import('./comanda/comanda.page').then(m => m.ComandaPage),
+      },
+      {
+        path: '',
+        redirectTo: 'cardapio',
+        pathMatch: 'full',
+      },
+    ],
+  },
+  {
+    path: 'pagamento',
+    loadComponent: () => import('./pagamento/pagamento.page').then(m => m.PagamentoPage),
+  },
+  {
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full',
+  },
+];
+</file>
+
+<file path="src/app/firebase.config.ts">
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+
+export const firebaseConfig = {
+  apiKey: "AIzaSyBhuejn-USISsecPyEVstfFHBzdM0RJZVc",
+  authDomain: "games-fe5c4.firebaseapp.com",
+  projectId: "games-fe5c4",
+  storageBucket: "games-fe5c4.firebasestorage.app",
+  messagingSenderId: "752543266424",
+  appId: "1:752543266424:web:d84172c52e00ee638b9f8d"
+};
+
+const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+</file>
+
+<file path="src/assets/shapes.svg">
+<svg width="350" height="140" xmlns="http://www.w3.org/2000/svg" style="background:#f6f7f9"><g fill="none" fill-rule="evenodd"><path fill="#F04141" style="mix-blend-mode:multiply" d="M61.905-34.23l96.194 54.51-66.982 54.512L22 34.887z"/><circle fill="#10DC60" style="mix-blend-mode:multiply" cx="155.5" cy="135.5" r="57.5"/><path fill="#3880FF" style="mix-blend-mode:multiply" d="M208.538 9.513l84.417 15.392L223.93 93.93z"/><path fill="#FFCE00" style="mix-blend-mode:multiply" d="M268.625 106.557l46.332-26.75 46.332 26.75v53.5l-46.332 26.75-46.332-26.75z"/><circle fill="#7044FF" style="mix-blend-mode:multiply" cx="299.5" cy="9.5" r="38.5"/><rect fill="#11D3EA" style="mix-blend-mode:multiply" transform="rotate(-60 148.47 37.886)" x="143.372" y="-7.056" width="10.196" height="89.884" rx="5.098"/><path d="M-25.389 74.253l84.86 8.107c5.498.525 9.53 5.407 9.004 10.905a10 10 0 0 1-.057.477l-12.36 85.671a10.002 10.002 0 0 1-11.634 8.42l-86.351-15.226c-5.44-.959-9.07-6.145-8.112-11.584l13.851-78.551a10 10 0 0 1 10.799-8.219z" fill="#7044FF" style="mix-blend-mode:multiply"/><circle fill="#0CD1E8" style="mix-blend-mode:multiply" cx="273.5" cy="106.5" r="20.5"/></g></svg>
+</file>
+
+<file path="src/environments/environment.prod.ts">
+export const environment = {
+  production: true
+};
+</file>
+
+<file path="src/environments/environment.ts">
+// This file can be replaced during build by using the `fileReplacements` array.
+// `ng build` replaces `environment.ts` with `environment.prod.ts`.
+// The list of file replacements can be found in `angular.json`.
+
+export const environment = {
+  production: false
+};
+
+/*
+ * For easier debugging in development mode, you can import the following file
+ * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
+ *
+ * This import should be commented out in production mode because it will have a negative impact
+ * on performance if an error is thrown.
+ */
+// import 'zone.js/plugins/zone-error';  // Included with Angular CLI.
+</file>
+
+<file path="src/theme/variables.scss">
+// Tema global — paleta bege & preto (Cantina do Joaquim)
+// https://ionicframework.com/docs/theming/
+
+:root {
+  /* bege */
+  --bege-50:  #faf6ee;
+  --bege-100: #f4eddd;
+  --bege-200: #eadfc6;
+  --bege-300: #dbcaa3;
+  --bege-400: #c7ae7f;
+  --bege-500: #b3965f;
+
+  /* preto */
+  --preto:      #1c1917;
+  --preto-70:   rgba(28, 25, 23, 0.7);
+  --preto-45:   rgba(28, 25, 23, 0.45);
+  --preto-15:   rgba(28, 25, 23, 0.15);
+  --preto-08:   rgba(28, 25, 23, 0.08);
+
+  /* cor primária = preto */
+  --ion-color-primary: #1c1917;
+  --ion-color-primary-rgb: 28, 25, 23;
+  --ion-color-primary-contrast: #faf6ee;
+  --ion-color-primary-contrast-rgb: 250, 246, 238;
+  --ion-color-primary-shade: #191614;
+  --ion-color-primary-tint: #322f2d;
+
+  /* fundos e superfícies em bege */
+  --ion-background-color: var(--bege-100);
+  --ion-text-color: var(--preto);
+  --ion-toolbar-background: var(--bege-50);
+  --ion-toolbar-color: var(--preto);
+  --ion-tab-bar-background: var(--bege-50);
+  --ion-tab-bar-color: var(--preto-45);
+  --ion-tab-bar-color-selected: var(--preto);
+  --ion-item-background: var(--bege-50);
+  --ion-card-background: var(--bege-50);
+}
+
+/* Tema escuro desativado para manter a paleta bege/preto consistente. */
+</file>
+
+<file path="src/global.scss">
+/* App Global CSS */
+/* ---------------------------------------------------------------------------- */
+
+/* Core CSS required for Ionic components to work properly */
+@import "@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/display.css";
+
+/* Optional CSS utils that can be commented out */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+/* Dark Mode: import desativado de propósito — o app usa a paleta bege/preto
+   definida em theme/variables.scss em todos os momentos. */
+
+/* ----------------------------------------------------------------------------
+   Paleta global bege & preto
+---------------------------------------------------------------------------- */
+body {
+  background: var(--ion-background-color);
+  color: var(--ion-text-color);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ion-card usado como "card bonito" em toda a aplicação */
+ion-card {
+  --background: var(--bege-50);
+  background: var(--bege-50);
+  border: 1px solid var(--preto-08);
+  border-radius: 16px;
+  box-shadow: 0 1px 2px var(--preto-08), 0 4px 16px var(--preto-08);
+}
+
+/* inputs internos em bege */
+ion-item {
+  --background: var(--bege-100);
+  --color: var(--preto);
+  --border-color: var(--preto-15);
+  --border-radius: 10px;
+}
+
+/* botões */
+ion-button {
+  --border-radius: 10px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+/* mensagem de erro padrão (login / cadastro / pagamento) */
+.msg-erro {
+  background: #2a1210;
+  color: #f3d9c8;
+  border: 1px solid rgba(179, 70, 40, 0.4);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 0.9rem;
+  margin: 4px 0 8px;
+}
+</file>
+
+<file path="src/index.html">
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Ionic App</title>
+
+  <base href="/" />
+
+  <meta name="color-scheme" content="light dark" />
+  <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="msapplication-tap-highlight" content="no" />
+
+  <link rel="icon" type="image/png" href="assets/icon/favicon.png" />
+
+  <!-- add to homescreen for ios -->
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+</head>
+
+<body>
+  <app-root></app-root>
+</body>
+
+</html>
+</file>
+
+<file path="src/main.ts">
+import { bootstrapApplication } from '@angular/platform-browser';
+import { RouteReuseStrategy, provideRouter, withPreloading, PreloadAllModules } from '@angular/router';
+import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular';
+
+import { routes } from './app/app.routes';
+import { AppComponent } from './app/app.component';
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    provideIonicAngular(),
+    provideRouter(routes, withPreloading(PreloadAllModules)),
+  ],
+});
+</file>
+
+<file path="src/polyfills.ts">
+/**
+ * This file includes polyfills needed by Angular and is loaded before the app.
+ * You can add your own extra polyfills to this file.
+ *
+ * This file is divided into 2 sections:
+ *   1. Browser polyfills. These are applied before loading ZoneJS and are sorted by browsers.
+ *   2. Application imports. Files imported after ZoneJS that should be loaded before your main
+ *      file.
+ *
+ * The current setup is for so-called "evergreen" browsers; the last versions of browsers that
+ * automatically update themselves. This includes recent versions of Safari, Chrome (including
+ * Opera), Edge on the desktop, and iOS and Chrome on mobile.
+ *
+ * Learn more in https://angular.io/guide/browser-support
+ */
+
+/***************************************************************************************************
+ * BROWSER POLYFILLS
+ */
+
+/**
+ * By default, zone.js will patch all possible macroTask and DomEvents
+ * user can disable parts of macroTask/DomEvents patch by setting following flags
+ * because those flags need to be set before `zone.js` being loaded, and webpack
+ * will put import in the top of bundle, so user need to create a separate file
+ * in this directory (for example: zone-flags.ts), and put the following flags
+ * into that file, and then add the following code before importing zone.js.
+ * import './zone-flags';
+ *
+ * The flags allowed in zone-flags.ts are listed here.
+ *
+ * The following flags will work for all browsers.
+ *
+ * (window as any).__Zone_disable_requestAnimationFrame = true; // disable patch requestAnimationFrame
+ * (window as any).__Zone_disable_on_property = true; // disable patch onProperty such as onclick
+ * (window as any).__zone_symbol__UNPATCHED_EVENTS = ['scroll', 'mousemove']; // disable patch specified eventNames
+ *
+ *  in IE/Edge developer tools, the addEventListener will also be wrapped by zone.js
+ *  with the following flag, it will bypass `zone.js` patch for IE/Edge
+ *
+ *  (window as any).__Zone_enable_cross_context_check = true;
+ *
+ */
+
+import './zone-flags';
+
+/***************************************************************************************************
+ * Zone JS is required by default for Angular itself.
+ */
+import 'zone.js';  // Included with Angular CLI.
+
+
+/***************************************************************************************************
+ * APPLICATION IMPORTS
+ */
+</file>
+
+<file path="src/test.ts">
+// This file is required by karma.conf.js and loads recursively all the .spec and framework files
+
+import 'zone.js/testing';
+import { getTestBed } from '@angular/core/testing';
+import {
+  BrowserDynamicTestingModule,
+  platformBrowserDynamicTesting
+} from '@angular/platform-browser-dynamic/testing';
+
+// First, initialize the Angular testing environment.
+getTestBed().initTestEnvironment(
+  BrowserDynamicTestingModule,
+  platformBrowserDynamicTesting(),
+);
+</file>
+
+<file path="src/zone-flags.ts">
+/**
+ * Prevents Angular change detection from
+ * running with certain Web Component callbacks
+ */
+// eslint-disable-next-line no-underscore-dangle
+(window as any).__Zone_disable_customElements = true;
+</file>
+
+<file path=".browserslistrc">
+# This file is used by the build system to adjust CSS and JS output to support the specified browsers below.
+# For additional information regarding the format and rule options, please see:
+# https://github.com/browserslist/browserslist#queries
+
+# For the full list of supported browsers by the Angular framework, please see:
+# https://angular.dev/reference/versions#browser-support
+
+# You can see what browsers were selected by your queries by running:
+#   npx browserslist
+
+Chrome >=107
+Firefox >=106
+Edge >=107
+Safari >=16.1
+iOS >=16.1
+</file>
+
+<file path=".editorconfig">
+# Editor configuration, see https://editorconfig.org
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.ts]
+quote_type = single
+
+[*.md]
+max_line_length = off
+trim_trailing_whitespace = false
+</file>
+
+<file path=".gitignore">
+# Specifies intentionally untracked files to ignore when using Git
+# http://git-scm.com/docs/gitignore
+
+*~
+*.sw[mnpcod]
+.tmp
+*.tmp
+*.tmp.*
+UserInterfaceState.xcuserstate
+$RECYCLE.BIN/
+
+*.log
+log.txt
+
+
+/.sourcemaps
+/.versions
+/coverage
+
+# Ionic
+/.ionic
+/www
+/platforms
+/plugins
+
+# Compiled output
+/dist
+/tmp
+/out-tsc
+/bazel-out
+
+# Node
+/node_modules
+npm-debug.log
+yarn-error.log
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+
+# Miscellaneous
+/.angular
+/.angular/cache
+.sass-cache/
+/.nx
+/.nx/cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
+
+# System files
+.DS_Store
+Thumbs.db
+</file>
+
+<file path="angular.json">
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "app": {
+      "projectType": "application",
+      "schematics": {
+        "@ionic/angular-toolkit:page": {
+          "styleext": "scss",
+          "standalone": true
+        }
+      },
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "outputPath": {
+              "base": "www",
+              "browser": ""
+            },
+            "index": "src/index.html",
+            "polyfills": [],
+            "tsConfig": "tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "assets"
+              }
+            ],
+            "styles": ["src/global.scss", "src/theme/variables.scss"],
+            "scripts": [],
+            "browser": "src/main.ts"
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            },
+            "ci": {
+              "progress": false
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "app:build:production"
+            },
+            "development": {
+              "buildTarget": "app:build:development"
+            },
+            "ci": {
+              "progress": false
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular/build:extract-i18n",
+          "options": {
+            "buildTarget": "app:build"
+          }
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "tsconfig.spec.json",
+            "buildTarget": "::development",
+            "setupFiles": ["src/test-setup.ts"]
+          },
+          "configurations": {
+            "ci": {
+              "watch": false
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "schematicCollections": [
+      "@ionic/angular-toolkit"
+    ],
+    "analytics": "9c0c8804-f1d6-47cf-a9ad-95ff3d3172f0"
+  },
+  "schematics": {
+    "@ionic/angular-toolkit:component": {
+      "styleext": "scss",
+      "standalone": true
+    },
+    "@ionic/angular-toolkit:page": {
+      "styleext": "scss",
+      "standalone": true
+    },
+    "@angular-eslint/schematics:application": {
+      "setParserOptionsProject": true
+    },
+    "@angular-eslint/schematics:library": {
+      "setParserOptionsProject": true
+    }
+  }
+}
+</file>
+
+<file path="eslint.config.js">
+// @ts-check
+const tseslint = require("typescript-eslint");
+const angular = require("angular-eslint");
+
+module.exports = tseslint.config(
+  {
+    files: ["**/*.ts"],
+    ignores: ["projects/**/*"],
+    extends: [...angular.configs.tsRecommended],
+    processor: angular.processInlineTemplates,
+    rules: {
+      "@angular-eslint/component-class-suffix": [
+        "error",
+        { suffixes: ["Page", "Component"] },
+      ],
+      "@angular-eslint/component-selector": [
+        "error",
+        { type: "element", prefix: "app", style: "kebab-case" },
+      ],
+      "@angular-eslint/directive-selector": [
+        "error",
+        { type: "attribute", prefix: "app", style: "camelCase" },
+      ],
+    },
+  },
+  {
+    files: ["**/*.html"],
+    extends: [...angular.configs.templateRecommended],
+    rules: {},
+  }
+);
+</file>
+
+<file path="ionic.config.json">
+{
+  "name": "jogosOutput",
+  "integrations": {},
+  "type": "angular-standalone"
+}
+</file>
+
+<file path="package.json">
+{
+  "name": "jogosOutput",
+  "version": "0.0.1",
+  "author": "Ionic Framework",
+  "homepage": "https://ionicframework.com/",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test",
+    "lint": "ng lint"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/common": "22.0.1",
+    "@angular/compiler": "22.0.1",
+    "@angular/core": "22.0.1",
+    "@angular/forms": "22.0.1",
+    "@angular/platform-browser": "22.0.1",
+    "@angular/router": "22.0.1",
+    "@capacitor/app": "8.1.1",
+    "@capacitor/core": "8.5.0",
+    "@capacitor/haptics": "8.0.2",
+    "@capacitor/keyboard": "8.0.5",
+    "@capacitor/status-bar": "8.0.3",
+    "@ionic/angular": "^9.0.0",
+    "firebase": "^12.18.0",
+    "ionicons": "^8.1.0",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@angular/build": "22.0.1",
+    "@angular/cli": "22.0.1",
+    "@angular/compiler-cli": "22.0.1",
+    "@angular/language-service": "22.0.1",
+    "@capacitor/cli": "8.5.0",
+    "@ionic/angular-toolkit": "^13.0.0",
+    "angular-eslint": "22.0.0",
+    "eslint": "^9.16.0",
+    "jsdom": "^26.0.0",
+    "typescript": "~6.0.0",
+    "typescript-eslint": "^8.61.0",
+    "vitest": "^4.0.8"
+  },
+  "description": "An Ionic project"
+}
+</file>
+
+<file path="tsconfig.app.json">
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/app",
+    "types": []
+  },
+  "files": [
+    "src/main.ts"
+  ],
+  "include": [
+    "src/**/*.d.ts"
+  ]
+}
+</file>
+
+<file path="tsconfig.json">
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "outDir": "./dist/out-tsc",
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+    "strict": false,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "sourceMap": true,
+    "declaration": false,
+    "experimentalDecorators": true,
+    "moduleResolution": "bundler",
+    "importHelpers": true,
+    "target": "es2022",
+    "module": "es2020",
+    "lib": ["es2022", "dom"],
+    "skipLibCheck": true,
+    "useDefineForClassFields": false
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  }
+}
+</file>
+
+<file path="tsconfig.spec.json">
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/spec",
+    "types": [
+      "vitest/globals"
+    ]
+  },
+  "include": [
+    "src/**/*.spec.ts",
+    "src/**/*.d.ts",
+    "src/test-setup.ts"
+  ]
+}
+</file>
+
+</files>
