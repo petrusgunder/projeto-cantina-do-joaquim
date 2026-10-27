@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import {
   IonButton,
   IonCard,
@@ -42,6 +43,7 @@ import { ComandaService, ItemSistema } from '../services/comandaService';
 })
 export class CardapioPage {
   readonly comanda = inject(ComandaService);
+  private router = inject(Router);
 
   isModalAberto = signal(false);
   novoNome = signal('');
@@ -57,6 +59,11 @@ export class CardapioPage {
 
   fecharModal() {
     this.isModalAberto.set(false);
+  }
+
+  voltarParaPrincipal() {
+    this.fecharModal();
+    this.router.navigate(['/tabs/cardapio']);
   }
 
   onFotoSelecionada(event: Event) {
@@ -80,7 +87,7 @@ export class CardapioPage {
       this.fotoBase64()
     );
 
-    this.fecharModal();
+    this.voltarParaPrincipal();
   }
 
   async marcarComoDevolvido(item: ItemSistema) {
