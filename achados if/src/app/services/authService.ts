@@ -1,8 +1,11 @@
 import { Injectable, NgZone, inject } from '@angular/core';
 import {
+  browserLocalPersistence,
+  browserSessionPersistence,
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
   onAuthStateChanged,
+  setPersistence,
   signInWithPopup,
   signInWithEmailAndPassword,
   signOut,
@@ -44,7 +47,6 @@ export class AuthService {
     });
   }
 
-  // espera o Firebase confirmar a sessão atual antes de navegar
   aguardarSessao(): Promise<User> {
     return new Promise((resolve) => {
       if (this.usuario) {
@@ -54,7 +56,7 @@ export class AuthService {
 
       const cancelar = onAuthStateChanged(auth, (user) => {
         if (!user) {
-          return; // ainda está saindo/trocando de conta; continua esperando
+          return;
         }
         cancelar();
         this.ngZone.run(() => {
@@ -66,16 +68,26 @@ export class AuthService {
     });
   }
 
-  cadastrar(email: string, senha: string) {
+  // Define se o login fica salvo após fechar o app/navegador
+  async definirPersistencia(manterConectado: boolean) {
+    const tipo = manterConectado
+      ? browserLocalPersistence
+      : browserSessionPersistence;
+    await setPersistence(auth, tipo);
+  }
+
+  async cadastrar(email: string, senha: string) {
+    await this.definirPersistencia(true);
     return createUserWithEmailAndPassword(auth, email, senha);
   }
 
-  login(email: string, senha: string) {
+  async login(email: string, senha: string, manterConectado = true) {
+    await this.definirPersistencia(manterConectado);
     return signInWithEmailAndPassword(auth, email, senha);
   }
 
-  // entra com a conta Google, sem senha nova
-  loginComGoogle() {
+  async loginComGoogle(manterConectado = true) {
+    await this.definirPersistencia(manterConectado);
     const provedor = new GoogleAuthProvider();
     return signInWithPopup(auth, provedor);
   }

@@ -23,6 +23,12 @@
           </ion-input>
         </ion-item>
 
+        <ion-item lines="none" class="item-lembrar">
+          <ion-checkbox [(ngModel)]="manterConectado" labelPlacement="end">
+            Manter conectado
+          </ion-checkbox>
+        </ion-item>
+
         @if (mensagemErro) {
           <p class="msg-erro">
             {{ mensagemErro }}

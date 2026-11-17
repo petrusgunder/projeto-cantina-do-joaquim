@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import {
   IonButton,
   IonCard,
@@ -42,10 +41,12 @@ import { ComandaService, ItemSistema } from '../services/comandaService';
   ],
 })
 export class ComandaPage {
+  @ViewChild(IonModal) modal?: IonModal;
+
   readonly comanda = inject(ComandaService);
-  private router = inject(Router);
 
   isModalAberto = signal(false);
+  salvando = signal(false);
   novoNome = signal('');
   novoLocal = signal('');
   fotoBase64 = signal<string | undefined>(undefined);
@@ -57,37 +58,49 @@ export class ComandaPage {
     this.isModalAberto.set(true);
   }
 
-  fecharModal() {
+  async fecharModal() {
     this.isModalAberto.set(false);
+    await this.modal?.dismiss();
   }
 
-  voltarParaPrincipal() {
-    this.fecharModal();
-    this.router.navigate(['/tabs/cardapio']);
+  aoFecharModal() {
+    this.isModalAberto.set(false);
   }
 
   onFotoSelecionada(event: Event) {
     const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      const file = input.files[0];
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.fotoBase64.set(reader.result as string);
+    const file = input.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const max = 800;
+        const escala = Math.min(1, max / Math.max(img.width, img.height));
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width * escala;
+        canvas.height = img.height * escala;
+        canvas.getContext('2d')?.drawImage(img, 0, 0, canvas.width, canvas.height);
+        this.fotoBase64.set(canvas.toDataURL('image/jpeg', 0.75));
       };
-      reader.readAsDataURL(file);
-    }
+      img.src = reader.result as string;
+    };
+    reader.readAsDataURL(file);
   }
 
   async salvarItemPerdido() {
-    if (!this.novoNome() || !this.novoLocal()) return;
+    const nome = this.novoNome().trim();
+    const local = this.novoLocal().trim();
+    if (!nome || !local || this.salvando()) return;
 
-    await this.comanda.adicionarPerdido(
-      this.novoNome(),
-      this.novoLocal(),
-      this.fotoBase64()
-    );
-
-    this.voltarParaPrincipal();
+    this.salvando.set(true);
+    try {
+      await this.comanda.adicionarPerdido(nome, local, this.fotoBase64());
+      await this.fecharModal();
+    } finally {
+      this.salvando.set(false);
+    }
   }
 
   async marcarComoEncontrado(item: ItemSistema) {

@@ -1,7 +1,6 @@
 <ion-content class="ion-padding">
   <div class="espacamento-topo"></div>
 
-  <!-- Botão para abrir o formulário modal -->
   <ion-button expand="block" class="btn-cadastrar" (click)="abrirModal()">
     Cadastrar item perdido
   </ion-button>
@@ -10,7 +9,6 @@
     <p class="vazio">Nenhum objeto perdido cadastrado no momento.</p>
   }
 
-  <!-- Lista de Objetos Perdidos -->
   @for (item of comanda.itensPerdidos(); track item.id) {
     <ion-card class="item-comanda-card">
       @if (item.fotoUrl) {
@@ -25,7 +23,6 @@
           Local provável: {{ item.local }}
         </div>
 
-        <!-- Identificação EXCLUSIVA da área de perdidos -->
         <div class="item-usuario">
           Perdido por: <span>{{ item.userName }}</span>
         </div>
@@ -38,7 +35,7 @@
   }
 
   <!-- Modal do Formulário de Cadastro -->
-  <ion-modal [isOpen]="isModalAberto()">
+  <ion-modal [isOpen]="isModalAberto()" (didDismiss)="aoFecharModal()">
     <ng-template>
       <ion-header>
         <ion-toolbar>
@@ -51,12 +48,20 @@
       <ion-content class="ion-padding">
         <ion-item>
           <ion-label position="stacked">Nome do Objeto</ion-label>
-          <ion-input [(ngModel)]="novoNome" placeholder="Ex: Casaco Moletom"></ion-input>
+          <ion-input
+            [ngModel]="novoNome()"
+            (ngModelChange)="novoNome.set($event)"
+            placeholder="Ex: Casaco Moletom">
+          </ion-input>
         </ion-item>
 
         <ion-item>
           <ion-label position="stacked">Local Provável</ion-label>
-          <ion-input [(ngModel)]="novoLocal" placeholder="Ex: Quadra de Esportes"></ion-input>
+          <ion-input
+            [ngModel]="novoLocal()"
+            (ngModelChange)="novoLocal.set($event)"
+            placeholder="Ex: Quadra de Esportes">
+          </ion-input>
         </ion-item>
 
         <div class="upload-container">
@@ -67,8 +72,12 @@
           }
         </div>
 
-        <ion-button expand="block" class="btn-salvar" (click)="salvarItemPerdido()">
-          Salvar Item
+        <ion-button
+          expand="block"
+          class="btn-salvar"
+          [disabled]="salvando()"
+          (click)="salvarItemPerdido()">
+          {{ salvando() ? 'Salvando...' : 'Salvar Item' }}
         </ion-button>
       </ion-content>
     </ng-template>

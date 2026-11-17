@@ -8,7 +8,6 @@
     <p class="vazio">Nenhum item achado registrado no momento.</p>
   }
 
-  <!-- Lista de Objetos Achados (SEM o nome/e-mail de quem perdeu) -->
   <div class="cardapio-grid">
     @for (item of comanda.itensAchados(); track item.id) {
       <ion-card class="item-cardapio">
@@ -28,7 +27,7 @@
   </div>
 
   <!-- Modal do Formulário de Cadastro -->
-  <ion-modal [isOpen]="isModalAberto()">
+  <ion-modal [isOpen]="isModalAberto()" (didDismiss)="aoFecharModal()">
     <ng-template>
       <ion-header>
         <ion-toolbar>
@@ -41,12 +40,20 @@
       <ion-content class="ion-padding">
         <ion-item>
           <ion-label position="stacked">Nome do Objeto</ion-label>
-          <ion-input [(ngModel)]="novoNome" placeholder="Ex: Garrafa de Inox"></ion-input>
+          <ion-input
+            [ngModel]="novoNome()"
+            (ngModelChange)="novoNome.set($event)"
+            placeholder="Ex: Garrafa de Inox">
+          </ion-input>
         </ion-item>
 
         <ion-item>
           <ion-label position="stacked">Local Encontrado</ion-label>
-          <ion-input [(ngModel)]="novoLocal" placeholder="Ex: Pátio"></ion-input>
+          <ion-input
+            [ngModel]="novoLocal()"
+            (ngModelChange)="novoLocal.set($event)"
+            placeholder="Ex: Pátio">
+          </ion-input>
         </ion-item>
 
         <div class="upload-container">
@@ -57,8 +64,12 @@
           }
         </div>
 
-        <ion-button expand="block" class="btn-salvar" (click)="salvarItemAchado()">
-          Salvar Item
+        <ion-button
+          expand="block"
+          class="btn-salvar"
+          [disabled]="salvando()"
+          (click)="salvarItemAchado()">
+          {{ salvando() ? 'Salvando...' : 'Salvar Item' }}
         </ion-button>
       </ion-content>
     </ng-template>
